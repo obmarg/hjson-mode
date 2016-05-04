@@ -46,16 +46,24 @@
              (char ?\"))
       (zero-or-more blank)
       ?\:))
+(defconst hjson-mode-unquoted-key-re
+  (rx (group (one-or-more alnum) (zero-or-more blank)) ?\:))
 (defconst hjson-mode-number-re (rx (group (one-or-more digit)
                                          (optional ?\. (one-or-more digit)))))
 (defconst hjson-mode-keyword-re  (rx (group (or "true" "false" "null"))))
+(defconst hjson-mode-comment-re
+  (rx (group (or
+              (group ?\# (zero-or-more any))
+              (group ?\/ ?\/ (zero-or-more any))))))
 
 (defconst hjson-font-lock-keywords-1
   (list
    (list hjson-mode-quoted-key-re 1 font-lock-keyword-face)
+   (list hjson-mode-unquoted-key-re 1 font-lock-keyword-face)
    (list hjson-mode-quoted-string-re 1 font-lock-string-face)
    (list hjson-mode-keyword-re 1 font-lock-constant-face)
    (list hjson-mode-number-re 1 font-lock-constant-face)
+   (list hjson-mode-comment-re 1 font-lock-comment-face)
    )
   "Level one font lock.")
 
