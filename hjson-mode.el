@@ -37,6 +37,8 @@
                                (seq ?\\ (not (any ?\" ?\\)))
                                (not (any ?\" ?\\))))
              (char ?\"))))
+(defconst hjson-mode-unquoted-string-re
+  (rx ?\: (one-or-more blank) (group alpha (zero-or-more alnum))))
 (defconst hjson-mode-quoted-key-re
   (rx (group (char ?\")
              (zero-or-more (or (seq ?\\ ?\\)
@@ -47,7 +49,7 @@
       (zero-or-more blank)
       ?\:))
 (defconst hjson-mode-unquoted-key-re
-  (rx (group (one-or-more alnum) (zero-or-more blank)) ?\:))
+  (rx (group (one-or-more (any alnum "$" "_")) (zero-or-more blank)) ?\:))
 (defconst hjson-mode-number-re (rx (group (one-or-more digit)
                                          (optional ?\. (one-or-more digit)))))
 (defconst hjson-mode-keyword-re  (rx (group (or "true" "false" "null"))))
@@ -61,6 +63,7 @@
    (list hjson-mode-quoted-key-re 1 font-lock-keyword-face)
    (list hjson-mode-unquoted-key-re 1 font-lock-keyword-face)
    (list hjson-mode-quoted-string-re 1 font-lock-string-face)
+   (list hjson-mode-unquoted-string-re 1 font-lock-string-face)
    (list hjson-mode-keyword-re 1 font-lock-constant-face)
    (list hjson-mode-number-re 1 font-lock-constant-face)
    (list hjson-mode-comment-re 1 font-lock-comment-face)
