@@ -1,11 +1,12 @@
 ;;; hhjson-mode.el --- Major mode for editing hJSON files
 
+;; Copyright (c) Graeme Coupar
 ;; Much code taken from json-mode
 ;; Copyright (C) 2011-2014 Josh Johnston
 
 ;; Author: Graeme Coupar
 ;; URL: https://github.com/obmarg
-;; Version: 0.1.1
+;; Version: 0.1.0
 ;; Package-Requires: ()
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -29,6 +30,11 @@
 
 (require 'js)
 (require 'rx)
+
+(defcustom hjson-mode-hook nil
+  "List of functions to be called after `hjson-mode' has initialized."
+  :type 'hook
+  :group 'hjson-mode)
 
 (defconst hjson-mode-quoted-string-re
   (rx (group (char ?\")
@@ -73,7 +79,8 @@
 ;;;###autoload
 (define-derived-mode hjson-mode javascript-mode "HJSON"
   "Major mode for editing HJSON files"
-  (set (make-local-variable 'font-lock-defaults) '(hjson-font-lock-keywords-1 t)))
+  (set (make-local-variable 'font-lock-defaults) '(hjson-font-lock-keywords-1 t))
+  (run-hooks 'hjson-mode-hook))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.hjson$" . hjson-mode))
